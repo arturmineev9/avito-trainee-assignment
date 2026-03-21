@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.detekt)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.core.ui"
+    namespace = "ru.arturmineev9.avitotraineeassignment.feature.auth.api"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
@@ -29,12 +29,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.detekt.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

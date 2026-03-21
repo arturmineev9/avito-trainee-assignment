@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }
 private val versionMajor = 1
 private val versionMinor = 0

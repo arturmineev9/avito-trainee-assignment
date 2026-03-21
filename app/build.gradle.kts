@@ -7,10 +7,19 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-detekt {
-    buildUponDefaultConfig = true
-    autoCorrect = true
-    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+subprojects {
+    apply(plugin = libs.plugins.detekt.toString())
+
+    detekt {
+        buildUponDefaultConfig = true
+        autoCorrect = true
+        config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    }
+
+    dependencies {
+        detektPlugins(libs.detekt.formatting)
+        detektPlugins(libs.detekt.compose)
+    }
 }
 
 android {

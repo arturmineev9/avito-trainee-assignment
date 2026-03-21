@@ -25,3 +25,5 @@ dependencyResolutionManagement {
 rootProject.name = "AvitoTraineeAssignment"
 include(":app")
 include(":core:ui")
+include(":feature:auth:api")
+include(":feature:auth:impl")
