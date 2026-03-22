@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_invalid_credentials">Неверный email или пароль</string>
+    <string name="error_user_not_found">Пользователь не найден. Зарегистрируйтесь</string>
+    <string name="error_network">Нет подключения к интернету</string>
+    <string name="error_invalid_email">Введите корректный Email</string>
+    <string name="error_weak_password">Пароль должен содержать минимум 6 символов</string>
+    <string name="error_unknown">Произошла неизвестная ошибка</string>
+</resources>

@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.dependencies
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.core.ui"
+    namespace = "ru.arturmineev9.avitotraineeassignment.feature.auth.api"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
@@ -36,9 +38,10 @@ android {
 }
 
 dependencies {
+    api(project(":core:ui"))
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.material)
 }
