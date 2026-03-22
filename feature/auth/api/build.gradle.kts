@@ -39,6 +39,8 @@ android {
 
 dependencies {
     api(project(":core:ui"))
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
