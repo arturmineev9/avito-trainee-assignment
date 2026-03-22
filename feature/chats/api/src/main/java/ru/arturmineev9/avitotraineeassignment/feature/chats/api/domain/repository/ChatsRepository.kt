@@ -7,5 +7,5 @@ import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Cha
 interface ChatsRepository {
     fun getChatsPaged(): Flow<PagingData<Chat>>
     fun searchChatsPaged(query: String): Flow<PagingData<Chat>>
-    suspend fun createNewChat(title: String): String
+    suspend fun createNewChat(title: String): Result<String>
 }

@@ -7,4 +7,9 @@ sealed interface AppGraph {
     data object AuthGraph : AppGraph
     @Serializable
     data object ChatsGraph : AppGraph
+    @Serializable
+    data class ChatDetailGraph(val chatId: String) : AppGraph
+
+    @Serializable
+    data object ProfileGraph : AppGraph
 }
