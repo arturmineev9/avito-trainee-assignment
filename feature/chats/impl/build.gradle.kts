@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:database"))
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":feature:chats:api"))
