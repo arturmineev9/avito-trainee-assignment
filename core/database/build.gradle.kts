@@ -4,11 +4,10 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.feature.chats.impl"
+    namespace = "ru.arturmineev9.avitotraineeassignment.core.database"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
@@ -39,9 +38,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:navigation"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:chats:api"))
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -49,10 +50,4 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.detekt.compose)
-
-    implementation(libs.paging.compose)
-    implementation(libs.paging.runtime)
 }
