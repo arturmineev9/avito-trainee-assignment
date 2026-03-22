@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment
+package ru.arturmineev9.avitotraineeassignment.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

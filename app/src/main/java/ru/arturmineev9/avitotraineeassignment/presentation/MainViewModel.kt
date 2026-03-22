@@ -1,0 +1,42 @@
+package ru.arturmineev9.avitotraineeassignment.presentation
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.repository.AuthRepository
+import ru.arturmineev9.avitotraineeassignment.navigation.AuthGraph
+import ru.arturmineev9.avitotraineeassignment.navigation.ChatsGraph
+import javax.inject.Inject
+
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _startDestination = MutableStateFlow<Any>(AuthGraph)
+    val startDestination = _startDestination.asStateFlow()
+
+    init {
+        checkAuthStatus()
+    }
+
+    private fun checkAuthStatus() {
+        viewModelScope.launch {
+            val user = authRepository.getCurrentUser()
+
+            if (user != null) {
+                _startDestination.value = ChatsGraph
+            } else {
+                _startDestination.value = AuthGraph
+            }
+
+            _isLoading.value = false
+        }
+    }
+}

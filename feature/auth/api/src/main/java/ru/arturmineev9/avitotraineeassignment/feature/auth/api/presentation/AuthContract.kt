@@ -20,5 +20,5 @@ sealed interface AuthEvent : UiEvent {
 
 sealed interface AuthEffect : UiEffect {
     object NavigateToChats : AuthEffect
-    data class ShowError(val message: String) : AuthEffect
+    data class ShowError(val error: Throwable) : AuthEffect
 }
