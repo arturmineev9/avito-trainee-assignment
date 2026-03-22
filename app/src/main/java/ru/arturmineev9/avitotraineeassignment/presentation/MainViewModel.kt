@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.repository.AuthRepository
-import ru.arturmineev9.avitotraineeassignment.navigation.AuthGraph
-import ru.arturmineev9.avitotraineeassignment.navigation.ChatsGraph
+import ru.arturmineev9.avitotraineeassignment.navigation.AppGraph
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +18,7 @@ class MainViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
-    private val _startDestination = MutableStateFlow<Any>(AuthGraph)
+    private val _startDestination = MutableStateFlow<AppGraph>(AppGraph.AuthGraph)
     val startDestination = _startDestination.asStateFlow()
 
     init {
@@ -31,9 +30,9 @@ class MainViewModel @Inject constructor(
             val user = authRepository.getCurrentUser()
 
             if (user != null) {
-                _startDestination.value = ChatsGraph
+                _startDestination.value = AppGraph.ChatsGraph
             } else {
-                _startDestination.value = AuthGraph
+                _startDestination.value = AppGraph.AuthGraph
             }
 
             _isLoading.value = false

@@ -19,8 +19,7 @@ fun AppNavigation(startDestination: AppGraph = AppGraph.AuthGraph) {
         navController = navController,
         startDestination = startDestination
     ) {
-        // Явно указываем типы параметров лямбды
-        composable<AppGraph.AuthGraph> { _, _ ->
+        composable<AppGraph.AuthGraph> {
             AuthRoute(
                 navigateToChats = {
                     navController.navigate(AppGraph.ChatsGraph) {
@@ -30,7 +29,7 @@ fun AppNavigation(startDestination: AppGraph = AppGraph.AuthGraph) {
             )
         }
 
-        composable<AppGraph.ChatsGraph> { _, _ ->
+        composable<AppGraph.ChatsGraph> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
