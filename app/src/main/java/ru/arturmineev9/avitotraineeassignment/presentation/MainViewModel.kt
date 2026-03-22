@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.arturmineev9.avitotraineeassignment.core.navigation.AppGraph
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.repository.AuthRepository
-import ru.arturmineev9.avitotraineeassignment.navigation.AppGraph
 import javax.inject.Inject
 
 @HiltViewModel

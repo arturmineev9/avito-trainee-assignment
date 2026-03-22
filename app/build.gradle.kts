@@ -62,6 +62,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
@@ -73,6 +74,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.core.splashscreen)
 
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose)

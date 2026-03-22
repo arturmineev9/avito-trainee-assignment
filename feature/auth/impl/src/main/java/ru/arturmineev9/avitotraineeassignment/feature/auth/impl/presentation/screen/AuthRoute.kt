@@ -10,13 +10,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.AuthNavigator
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthEffect
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.toUiText
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun AuthRoute(
-    navigateToChats: () -> Unit,
+    navigator: AuthNavigator,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -27,7 +28,7 @@ fun AuthRoute(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is AuthEffect.NavigateToChats -> navigateToChats()
+                is AuthEffect.NavigateToChats -> navigator.navigateToChats()
                 is AuthEffect.ShowError -> {
                     snackBarHostState.showSnackbar(
                         message = effect.error.toUiText(context),

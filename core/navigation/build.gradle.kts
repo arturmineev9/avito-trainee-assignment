@@ -1,14 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.feature.auth.impl"
+    namespace = "ru.arturmineev9.avitotraineeassignment.core.navigation"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
@@ -39,28 +36,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:navigation"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:auth:api"))
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-
-    implementation(libs.androidx.compose.material3)
-
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.kotlinx.coroutines.play.services)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
 }
