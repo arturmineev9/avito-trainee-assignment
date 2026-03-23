@@ -67,6 +67,9 @@ dependencies {
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
 
+    implementation(project(":feature:chats:api"))
+    implementation(project(":feature:chats:impl"))
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
