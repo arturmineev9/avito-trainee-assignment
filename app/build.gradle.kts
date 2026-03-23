@@ -63,6 +63,7 @@ android {
 
 dependencies {
     implementation(project(":core:navigation"))
+    implementation(project(":core:network"))
     implementation(project(":core:ui"))
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
