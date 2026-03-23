@@ -1,29 +1,17 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
 }
 
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(localPropertiesFile.inputStream())
-}
-
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.core.network"
+    namespace = "ru.arturmineev9.avitotraineeassignment.feature.chat.api"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        val authKey = localProperties.getProperty("GIGACHAT_AUTH_KEY") ?: ""
-        buildConfigField("String", "GIGACHAT_AUTH_KEY", "\"$authKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -45,21 +33,15 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
-    implementation(libs.retrofit.core)
-    implementation(libs.okhttp.logging)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit.kotlin.serialization
-    )
+    api(project(":core:ui"))
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime)
 }

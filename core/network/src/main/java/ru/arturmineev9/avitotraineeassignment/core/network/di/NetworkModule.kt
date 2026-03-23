@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import ru.arturmineev9.avitotraineeassignment.core.network.api.GigaChatApi
 import ru.arturmineev9.avitotraineeassignment.core.network.api.GigaChatAuthApi
 import ru.arturmineev9.avitotraineeassignment.core.network.interceptor.AuthInterceptor
+import ru.arturmineev9.avitotraineeassignment.core.network.interceptor.GigaChatAuthenticator
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import javax.inject.Qualifier
@@ -75,10 +76,12 @@ object NetworkModule {
     @ApiNetwork
     fun provideApiOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        authenticator: GigaChatAuthenticator
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            .authenticator(authenticator)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)

@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.arturmineev9.avitotraineeassignment.core.database.AppDatabase
 import ru.arturmineev9.avitotraineeassignment.core.database.dao.ChatDao
+import ru.arturmineev9.avitotraineeassignment.core.database.dao.MessageDao
 import javax.inject.Singleton
 
 @Module
@@ -29,5 +30,11 @@ object DatabaseModule {
     @Singleton
     fun provideChatDao(database: AppDatabase): ChatDao {
         return database.chatDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideMessageDao(database: AppDatabase): MessageDao {
+        return database.messageDao
     }
 }
