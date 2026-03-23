@@ -49,13 +49,22 @@ fun ChatsRoute(
         drawerContent = {
             ModalDrawerSheet {
                 ChatsDrawerContent(
-                    onProfileClick = {
-                        scope.launch { drawerState.close() }
-                        viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
-                    },
+                    searchQuery = state.searchQuery,
+                    onSearchQueryChange = { viewModel.onEvent(ChatsEvent.SearchQueryChanged(it)) },
                     onNewChatClick = {
                         scope.launch { drawerState.close() }
                         viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
+                    },
+                    onHomeClick = {
+                        scope.launch { drawerState.close() }
+                    },
+                    onImagesClick = {
+                        scope.launch { drawerState.close() }
+                        // TODO
+                    },
+                    onProfileClick = {
+                        scope.launch { drawerState.close() }
+                        viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
                     }
                 )
             }
