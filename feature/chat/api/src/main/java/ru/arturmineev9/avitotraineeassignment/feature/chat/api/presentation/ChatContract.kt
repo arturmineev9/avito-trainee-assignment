@@ -21,7 +21,7 @@ sealed interface ChatEvent : UiEvent {
 }
 
 sealed interface ChatEffect : UiEffect {
-    data class ShowError(val message: String) : ChatEffect
+    data class ShowError(val error: Throwable) : ChatEffect
     data class ShareText(val text: String) : ChatEffect
     object ScrollToBottom : ChatEffect
 }
