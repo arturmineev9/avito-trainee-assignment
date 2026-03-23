@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarTopBar(
+ fun SearchBarTopBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onCloseClick: () -> Unit
