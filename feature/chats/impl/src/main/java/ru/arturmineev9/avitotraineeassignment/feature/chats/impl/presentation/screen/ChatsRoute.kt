@@ -4,6 +4,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.ChatsNavigator
@@ -17,28 +21,32 @@ fun ChatsRoute(
     navigator: ChatsNavigator,
     viewModel: ChatsViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val pagedChats = viewModel.pagedChats.collectAsLazyPagingItems()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(viewModel.effect) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                is ChatsEffect.NavigateToChatDetail -> navigator.navigateToChatDetail(effect.chatId)
-                is ChatsEffect.NavigateToProfile -> navigator.navigateToProfile()
-                is ChatsEffect.ShowError -> {
-                    val errorMessage = effect.error.toUiText(context)
-                    snackBarHostState.showSnackbar(
-                        message = errorMessage,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-                is ChatsEffect.OpenDrawer -> {
-                    scope.launch { drawerState.open() }
+    LaunchedEffect(viewModel.effect, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    is ChatsEffect.NavigateToChatDetail -> navigator.navigateToChatDetail(effect.chatId)
+                    is ChatsEffect.NavigateToProfile -> navigator.navigateToProfile()
+                    is ChatsEffect.ShowError -> {
+                        val errorMessage = effect.error.toUiText(context)
+                        snackBarHostState.showSnackbar(
+                            message = errorMessage,
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+
+                    is ChatsEffect.OpenDrawer -> {
+                        scope.launch { drawerState.open() }
+                    }
                 }
             }
         }

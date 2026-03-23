@@ -15,6 +15,7 @@ import ru.arturmineev9.avitotraineeassignment.core.navigation.AppGraph
 import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.AuthNavigator
 import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.ChatsNavigator
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.screen.AuthRoute
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.screen.ChatRoute
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.ChatsRoute
 
 @Composable
@@ -54,10 +55,14 @@ fun AppNavigation(startDestination: AppGraph = AppGraph.AuthGraph) {
         }
 
         composable<AppGraph.ChatDetailGraph> { backStackEntry ->
-            val args = backStackEntry.toRoute<AppGraph.ChatDetailGraph>()
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Чат: ${args.chatId}")
-            }
+            val route: AppGraph.ChatDetailGraph = backStackEntry.toRoute()
+
+            ChatRoute(
+                chatId = route.chatId,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable<AppGraph.ProfileGraph> {
