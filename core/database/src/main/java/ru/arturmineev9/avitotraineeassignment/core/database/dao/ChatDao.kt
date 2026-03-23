@@ -19,7 +19,7 @@ interface ChatDao {
     @Query("""
         SELECT chats.* 
         FROM chats 
-        JOIN chats_fts ON chats.id = chats_fts.rowid 
+        JOIN chats_fts ON chats.rowid = chats_fts.rowid 
         WHERE chats_fts MATCH :searchQuery 
         ORDER BY chats.createdAt DESC
     """)

@@ -13,7 +13,7 @@ import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
         ChatFtsEntity::class,
         MessageEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
