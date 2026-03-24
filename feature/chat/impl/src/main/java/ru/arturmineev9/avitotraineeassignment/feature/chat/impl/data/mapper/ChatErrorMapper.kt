@@ -1,8 +1,9 @@
-package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.mapper
+package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.mapper
 
+import android.content.Context
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.ChatException
 
-fun Throwable.toUiText(context: android.content.Context): String {
+fun Throwable.toUiText(context: Context): String {
     return when (this) {
         is ChatException.NetworkError -> "Проверьте соединение с интернетом"
         is ChatException.AuthError -> "Ошибка авторизации GigaChat"

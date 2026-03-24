@@ -2,11 +2,9 @@ package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.sc
 
 import android.content.Intent
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -17,7 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEvent
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.mapper.toUiText
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.mapper.toUiText
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.viewmodel.ChatViewModel
 
 @Composable

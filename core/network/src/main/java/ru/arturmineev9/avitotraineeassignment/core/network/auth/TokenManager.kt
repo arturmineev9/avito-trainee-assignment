@@ -12,11 +12,11 @@ import javax.inject.Singleton
 @Singleton
 class TokenManager @Inject constructor(
     private val authApi: GigaChatAuthApi
-) {
+) : TokenProvider {
     private val mutex = Mutex()
     private var cachedToken: String? = null
 
-    suspend fun getAccessToken(): String? = cachedToken
+    override suspend fun getAccessToken(): String? = cachedToken
 
     suspend fun refreshToken(): String? = mutex.withLock {
         return try {
