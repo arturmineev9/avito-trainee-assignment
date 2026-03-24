@@ -1,0 +1,80 @@
+package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.repository
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
+import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.ChatRequest
+import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.MessageDto
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Message
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.repository.ChatRepository
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.LocalChatDataSource
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.RemoteChatDataSource
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.mapper.toDomain
+import java.util.UUID
+import javax.inject.Inject
+
+class ChatRepositoryImpl @Inject constructor(
+    private val localDataSource: LocalChatDataSource,
+    private val remoteDataSource: RemoteChatDataSource
+) : ChatRepository {
+
+    override fun getMessages(chatId: String): Flow<List<Message>> {
+        return localDataSource.getMessages(chatId).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun sendMessage(chatId: String, text: String): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            saveMessageLocally(chatId = chatId, text = text, isFromUser = true)
+
+            val chatRequest = buildChatRequest(chatId)
+            val aiResponseText = fetchAiResponse(chatRequest)
+
+            saveMessageLocally(chatId = chatId, text = aiResponseText, isFromUser = false)
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+    private suspend fun saveMessageLocally(chatId: String, text: String, isFromUser: Boolean) {
+        val entity = MessageEntity(
+            id = UUID.randomUUID().toString(),
+            chatId = chatId,
+            text = text,
+            isFromUser = isFromUser,
+            createdAt = System.currentTimeMillis()
+        )
+        localDataSource.saveMessage(entity)
+    }
+
+    private suspend fun buildChatRequest(chatId: String): ChatRequest {
+        val historyEntities = localDataSource.getMessages(chatId).first().takeLast(20)
+
+        val chatHistoryDtos = historyEntities.map { entity ->
+            MessageDto(
+                role = if (entity.isFromUser) "user" else "assistant",
+                content = entity.text
+            )
+        }
+
+        val systemMessage = MessageDto(
+            role = "system",
+            content = "Ты полезный и дружелюбный ИИ-ассистент."
+        )
+
+        return ChatRequest(messages = listOf(systemMessage) + chatHistoryDtos)
+    }
+
+    private suspend fun fetchAiResponse(request: ChatRequest): String {
+        val response = remoteDataSource.sendPrompt(request)
+        return response.choices.firstOrNull()?.message?.content
+            ?: throw IllegalStateException("Пустой ответ от ИИ")
+    }
+}

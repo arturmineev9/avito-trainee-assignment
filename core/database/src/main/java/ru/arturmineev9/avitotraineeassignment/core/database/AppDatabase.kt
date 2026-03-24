@@ -3,6 +3,7 @@ package ru.arturmineev9.avitotraineeassignment.core.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import ru.arturmineev9.avitotraineeassignment.core.database.dao.ChatDao
+import ru.arturmineev9.avitotraineeassignment.core.database.dao.MessageDao
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.ChatEntity
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.ChatFtsEntity
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
@@ -18,5 +19,5 @@ import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val chatDao: ChatDao
-    // abstract val messageDao: MessageDao
+    abstract val messageDao: MessageDao
 }
