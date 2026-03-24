@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:database"))
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
@@ -60,10 +61,11 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    implementation(libs.coil.compose)
-
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
     implementation(libs.paging.compose)
     implementation(libs.paging.runtime)
