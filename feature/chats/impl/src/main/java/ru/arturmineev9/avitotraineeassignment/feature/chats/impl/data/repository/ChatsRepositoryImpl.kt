@@ -16,6 +16,7 @@ import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Cha
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception.ChatsException
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.repository.ChatsRepository
 import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 import javax.inject.Inject
 
 class ChatsRepositoryImpl @Inject constructor(
@@ -48,28 +49,28 @@ class ChatsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createNewChat(title: String): Result<String> = withContext(Dispatchers.IO) {
-        return@withContext try {
-            val newChatId = UUID.randomUUID().toString()
-            val currentTime = System.currentTimeMillis()
+    override suspend fun createNewChat(title: String): Result<String> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                val newChatId = UUID.randomUUID().toString()
+                val currentTime = System.currentTimeMillis()
 
-            val newChat = ChatEntity(
-                id = newChatId,
-                title = title,
-                createdAt = currentTime
-            )
+                val newChat = ChatEntity(
+                    id = newChatId,
+                    title = title,
+                    createdAt = currentTime
+                )
 
-            chatDao.insertChat(newChat)
-            Result.success(newChatId)
-        } catch (e: Exception) {
-            val domainError = when (e) {
-                is SQLiteDiskIOException -> ChatsException.DiskFull()
-                is SQLiteException -> ChatsException.DatabaseError()
-                else -> ChatsException.Unknown(e.message)
+                chatDao.insertChat(newChat)
+                Result.success(newChatId)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: SQLiteDiskIOException) {
+                Result.failure(ChatsException.DiskFull(e))
+            } catch (e: SQLiteException) {
+                Result.failure(ChatsException.DatabaseError(e))
             }
-            Result.failure(domainError)
         }
-    }
 
     private fun ChatEntity.toDomain(): Chat {
         return Chat(

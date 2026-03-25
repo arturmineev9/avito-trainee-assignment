@@ -23,6 +23,8 @@ import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.ChatsNav
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.mapper.toUiText
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.drawer.ChatsDrawerContent
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.drawer.DrawerItem
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.viewmodel.ChatsViewModel
 
 @Composable
@@ -68,20 +70,14 @@ fun ChatsRoute(
                 ChatsDrawerContent(
                     searchQuery = state.searchQuery,
                     onSearchQueryChange = { viewModel.onEvent(ChatsEvent.SearchQueryChanged(it)) },
-                    onNewChatClick = {
+                    onMenuItemClick = { item ->
                         scope.launch { drawerState.close() }
-                        viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
-                    },
-                    onHomeClick = {
-                        scope.launch { drawerState.close() }
-                    },
-                    onImagesClick = {
-                        scope.launch { drawerState.close() }
-                        // TODO
-                    },
-                    onProfileClick = {
-                        scope.launch { drawerState.close() }
-                        viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
+                        when (item) {
+                            DrawerItem.NEW_CHAT -> viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
+                            DrawerItem.CHAT_LIST -> {  }
+                            DrawerItem.IMAGES -> { /* TODO */ }
+                            DrawerItem.PROFILE -> viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
+                        }
                     }
                 )
             }

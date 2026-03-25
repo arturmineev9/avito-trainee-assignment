@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.ui.mvi.BaseViewModel
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception.ChatsException
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.usecase.CreateNewChatUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.usecase.GetChatsUseCase
@@ -28,10 +29,14 @@ class ChatsViewModel @Inject constructor(
     private val createNewChatUseCase: CreateNewChatUseCase
 ) : BaseViewModel<ChatsState, ChatsEvent, ChatsEffect>(ChatsState()) {
 
+    companion object {
+        private const val SEARCH_DEBOUNCE_MILLIS = 300L
+    }
+
     private val searchQueryFlow = MutableStateFlow("")
 
     val pagedChats: Flow<PagingData<Chat>> = searchQueryFlow
-        .debounce(300L)
+        .debounce(SEARCH_DEBOUNCE_MILLIS)
         .distinctUntilChanged()
         .flatMapLatest { query ->
             getChatsUseCase(query)
@@ -69,9 +74,9 @@ class ChatsViewModel @Inject constructor(
             result.onSuccess { newChatId ->
                 setEffect { ChatsEffect.NavigateToChatDetail(newChatId) }
             }.onFailure { error ->
-                setEffect { ChatsEffect.ShowError(error) }
+                val chatsError = error as? ChatsException ?: ChatsException.Unknown(error.message, error)
+                setEffect { ChatsEffect.ShowError(chatsError) }
             }
-
             setState { copy(isCreatingChat = false) }
         }
     }

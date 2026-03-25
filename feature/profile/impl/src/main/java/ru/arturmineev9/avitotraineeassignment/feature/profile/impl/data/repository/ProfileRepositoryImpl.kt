@@ -1,7 +1,7 @@
 package ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.repository
 
-import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.exception.ProfileException
 import android.net.Uri
+import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
@@ -16,10 +16,13 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import ru.arturmineev9.avitotraineeassignment.core.common.datastore.settings.SettingsManager
 import ru.arturmineev9.avitotraineeassignment.core.common.datastore.userbalance.UserBalanceManager
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.exception.ProfileException
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.model.UserProfile
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.repository.ProfileRepository
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.datasource.ProfileFileDataSource
+import java.io.IOException
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class ProfileRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -60,8 +63,12 @@ class ProfileRepositoryImpl @Inject constructor(
             settingsManager.saveAvatarPath(user.uid, localPath)
 
             Result.success(localPath)
-        } catch (e: Exception) {
-            Result.failure(mapToProfileException(e))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: IOException) {
+            Result.failure(ProfileException.FileProcessingError(e))
+        } catch (e: IllegalStateException) {
+            Result.failure(ProfileException.FileProcessingError(e))
         }
     }
 
@@ -76,8 +83,14 @@ class ProfileRepositoryImpl @Inject constructor(
             user.updateProfile(profileUpdates).await()
             user.reload().await()
             Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(mapToProfileException(e))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: FirebaseNetworkException) {
+            Result.failure(ProfileException.NetworkError(e))
+        } catch (e: FirebaseException) {
+            Result.failure(ProfileException.NameUpdateError(e))
+        } catch (e: IllegalStateException) {
+            Result.failure(ProfileException.NameUpdateError(e))
         }
     }
 
@@ -85,17 +98,12 @@ class ProfileRepositoryImpl @Inject constructor(
         return try {
             firebaseAuth.signOut()
             Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(ProfileException.LogoutError())
-        }
-    }
-
-    private fun mapToProfileException(e: Exception): ProfileException {
-        return when (e) {
-            is java.io.IOException -> ProfileException.FileProcessingError()
-            is FirebaseNetworkException -> ProfileException.NetworkError()
-            is IllegalStateException -> ProfileException.FileProcessingError()
-            else -> ProfileException.Unknown(e.message)
+        } catch (e: IllegalStateException) {
+            Result.failure(ProfileException.LogoutError(e))
+        } catch (e: FirebaseException) {
+            Result.failure(ProfileException.LogoutError(e))
+        } catch (e: FirebaseNetworkException) {
+            Result.failure(ProfileException.NetworkError(e))
         }
     }
 }

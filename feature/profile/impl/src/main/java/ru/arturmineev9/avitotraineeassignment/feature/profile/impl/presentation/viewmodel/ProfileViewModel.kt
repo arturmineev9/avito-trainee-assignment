@@ -13,7 +13,6 @@ import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEffect
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEvent
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileState
-import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.domain.usecase.*
 import javax.inject.Inject
 
 @HiltViewModel

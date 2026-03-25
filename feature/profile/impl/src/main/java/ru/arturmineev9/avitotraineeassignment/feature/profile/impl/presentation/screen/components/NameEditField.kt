@@ -38,7 +38,7 @@ fun NameEditField(
                 )
             } else {
                 IconButton(onClick = onSave) {
-                    Icon(Icons.Default.Check, stringResource(R.string.cd_save), tint = Color(0xFF4CAF50))
+                    Icon(Icons.Default.Check, stringResource(R.string.cd_save))
                 }
             }
         },

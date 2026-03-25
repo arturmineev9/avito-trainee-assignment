@@ -7,7 +7,6 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-
 class ProfileFileDataSource @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
@@ -19,7 +18,7 @@ class ProfileFileDataSource @Inject constructor(
         val file = File(context.filesDir, fileName)
 
         val inputStream = context.contentResolver.openInputStream(imageUri)
-            ?: throw IllegalStateException("Cannot open uri")
+        checkNotNull(inputStream) { "Cannot open uri" }
 
         inputStream.use { input ->
             FileOutputStream(file).use { output ->

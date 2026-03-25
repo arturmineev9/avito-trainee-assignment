@@ -35,6 +35,8 @@ class ChatRepositoryImpl @Inject constructor(
 
     companion object {
         private const val MAX_HISTORY_MESSAGES = 20
+        private const val HTTP_UNAUTHORIZED = 401
+        private const val HTTP_TOO_MANY_REQUESTS = 429
     }
 
     override fun getMessages(chatId: String): Flow<List<Message>> {
@@ -64,8 +66,8 @@ class ChatRepositoryImpl @Inject constructor(
                 throw e
             } catch (e: HttpException) {
                 val mappedError = when (e.code()) {
-                    401 -> ChatException.AuthError(e)
-                    429 -> ChatException.DailyLimitReached(e)
+                    HTTP_UNAUTHORIZED -> ChatException.AuthError(e)
+                    HTTP_TOO_MANY_REQUESTS -> ChatException.DailyLimitReached(e)
                     else -> ChatException.Unknown(e.message(), e)
                 }
                 Result.failure(mappedError)
