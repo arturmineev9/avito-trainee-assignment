@@ -26,7 +26,7 @@ Android-приложение AI-ассистента, выполненное в 
 
 ### Скринкаст
 
-[Смотреть видео-демонстрацию](docs/demo/demo.mp4)
+[Смотреть видео-демонстрацию (Яндекс Диск)](https://disk.360.yandex.ru/i/4V7iuVpwl2BorQ)
 
 ## Функциональность
 
@@ -91,15 +91,11 @@ Android-приложение AI-ассистента, выполненное в 
 
 ## Запуск проекта
 
-### Необходимо
-- Android Studio
-- JDK 17
-- Android SDK
-- `google-services.json`
-
 ### Перед запуском
 1. Добавить `google-services.json` в модуль `app`.
-2. Указать необходимые значения в `local.properties` или `gradle.properties`:
+2. Указать необходимые значения в `local.properties`:
    - `GIGACHAT_AUTH_KEY`
    - `GIGACHAT_AUTH_BASE_URL`
    - `GIGACHAT_API_BASE_URL`
+
+[Ссылка на файлы (Яндекс Диск)](https://disk.360.yandex.ru/d/NCcPrTVTblF30Q)
