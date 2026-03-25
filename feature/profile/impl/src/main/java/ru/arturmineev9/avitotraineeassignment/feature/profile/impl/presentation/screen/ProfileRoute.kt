@@ -3,13 +3,8 @@ package ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -65,7 +60,7 @@ fun ProfileRoute(
 
     ProfileScreen(
         state = state,
-        snackbarHostState = snackBarHostState,
+        snackBarHostState = snackBarHostState,
         onEvent = viewModel::onEvent,
         onPickPhoto = {
             photoPickerLauncher.launch(

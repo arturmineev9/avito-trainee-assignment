@@ -19,12 +19,12 @@ import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfileScreen(
+fun ProfileScreen(
     state: ProfileState,
     snackBarHostState: SnackbarHostState,
     onEvent: (ProfileEvent) -> Unit,
     onPickPhoto: () -> Unit
-) {
+) {4
     Scaffold(
         snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = { TopAppBar(title = { Text("Профиль", fontWeight = FontWeight.Bold) }) }

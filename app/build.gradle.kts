@@ -62,6 +62,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
@@ -73,6 +74,9 @@ dependencies {
 
     implementation(project(":feature:chat:api"))
     implementation(project(":feature:chat:impl"))
+
+    implementation(project(":feature:profile:api"))
+    implementation(project(":feature:profile:impl"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
