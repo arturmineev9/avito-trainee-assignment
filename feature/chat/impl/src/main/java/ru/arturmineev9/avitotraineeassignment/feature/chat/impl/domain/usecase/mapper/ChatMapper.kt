@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.mapper
+package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.mapper
 
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Message

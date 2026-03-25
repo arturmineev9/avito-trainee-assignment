@@ -6,12 +6,16 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import ru.arturmineev9.avitotraineeassignment.core.common.settings.SettingsManager
+import ru.arturmineev9.avitotraineeassignment.core.common.datastore.settings.SettingsManager
+import ru.arturmineev9.avitotraineeassignment.core.common.datastore.userbalance.UserBalanceManager
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.model.UserProfile
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.repository.ProfileRepository
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.datasource.ProfileFileDataSource
@@ -20,25 +24,30 @@ import javax.inject.Inject
 class ProfileRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val settingsManager: SettingsManager,
+    private val userBalanceManager: UserBalanceManager,
     private val fileDataSource: ProfileFileDataSource
 ) : ProfileRepository {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun getUserProfile(): Flow<UserProfile> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
             val user = auth.currentUser
             if (user != null) {
-                val profile = UserProfile(
-                    uid = user.uid,
-                    name = user.displayName ?: "Имя не указано",
-                    email = user.email ?: "",
-                    photoUrl = null,
-                    tokensCount = 500
-                )
-                trySend(profile)
+                trySend(user)
             }
         }
         firebaseAuth.addAuthStateListener(listener)
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
+    }.flatMapLatest { firebaseUser ->
+        userBalanceManager.observeUserTokens(firebaseUser.uid).map { tokens ->
+            UserProfile(
+                uid = firebaseUser.uid,
+                name = firebaseUser.displayName ?: "Имя не указано",
+                email = firebaseUser.email ?: "",
+                photoUrl = null,
+                tokensCount = tokens
+            )
+        }
     }
 
     override suspend fun uploadAvatar(imageUri: Uri): Result<String> = withContext(Dispatchers.IO) {

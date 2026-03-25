@@ -4,7 +4,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.arturmineev9.avitotraineeassignment.core.common.settings.SettingsManager
+import ru.arturmineev9.avitotraineeassignment.core.common.datastore.settings.SettingsManager
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.model.UserProfile
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.repository.ProfileRepository
 import javax.inject.Inject

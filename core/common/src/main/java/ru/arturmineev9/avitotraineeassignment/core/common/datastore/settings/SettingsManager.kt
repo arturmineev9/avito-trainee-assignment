@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.core.common.settings
+package ru.arturmineev9.avitotraineeassignment.core.common.datastore.settings
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
