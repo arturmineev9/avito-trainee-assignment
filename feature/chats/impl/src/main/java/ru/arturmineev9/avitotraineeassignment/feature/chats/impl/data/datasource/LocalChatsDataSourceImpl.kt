@@ -15,8 +15,11 @@ class LocalChatsDataSourceImpl @Inject constructor(
     }
 
     override fun searchChatsPaged(searchQuery: String): PagingSource<Int, ChatEntity> {
-        val ftsQuery = "$searchQuery*"
-        return chatDao.searchChatsPaged(ftsQuery)
+        if (searchQuery.isBlank()) {
+            return chatDao.getChatsPaged()
+        }
+
+        return chatDao.searchChatsPaged(searchQuery)
     }
 
     override suspend fun insertChat(chat: ChatEntity) {

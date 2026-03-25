@@ -17,13 +17,7 @@ interface ChatDao {
     @Query("SELECT * FROM chats ORDER BY createdAt DESC")
     fun getChatsPaged(): PagingSource<Int, ChatEntity>
 
-    @Query("""
-        SELECT chats.* 
-        FROM chats 
-        JOIN chats_fts ON chats.rowid = chats_fts.rowid 
-        WHERE chats_fts MATCH :searchQuery 
-        ORDER BY chats.createdAt DESC
-    """)
+    @Query("SELECT * FROM chats WHERE title LIKE '%' || :searchQuery || '%' ORDER BY createdAt DESC")
     fun searchChatsPaged(searchQuery: String): PagingSource<Int, ChatEntity>
 
     @Query("SELECT title FROM chats WHERE id = :chatId")
