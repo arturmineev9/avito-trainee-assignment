@@ -6,8 +6,8 @@ import kotlinx.coroutines.tasks.await
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.exception.AuthException
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.model.AuthUser
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.repository.AuthRepository
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.mapFirebaseException
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.toDomain
+import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper.mapFirebaseException
+import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper.toDomain
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

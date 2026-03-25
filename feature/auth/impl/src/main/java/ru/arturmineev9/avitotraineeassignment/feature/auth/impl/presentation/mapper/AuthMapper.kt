@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper
+package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper
 
 import com.google.firebase.auth.FirebaseUser
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.model.AuthUser

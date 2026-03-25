@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper
+package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper
 
 import android.content.Context
 import com.google.firebase.FirebaseNetworkException
