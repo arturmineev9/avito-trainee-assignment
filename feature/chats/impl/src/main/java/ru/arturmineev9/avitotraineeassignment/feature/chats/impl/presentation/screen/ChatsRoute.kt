@@ -29,6 +29,7 @@ import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.sc
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.drawer.DrawerItem
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.viewmodel.ChatsViewModel
 
+private const val DRAWER_WIDTH_FRACTION = 0.75f
 @Composable
 fun ChatsRoute(
     navigator: ChatsNavigator,
@@ -36,7 +37,6 @@ fun ChatsRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagedChats = viewModel.pagedChats.collectAsLazyPagingItems()
-
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -56,7 +56,6 @@ fun ChatsRoute(
                             duration = SnackbarDuration.Short
                         )
                     }
-
                     is ChatsEffect.OpenDrawer -> {
                         scope.launch { drawerState.open() }
                     }
@@ -68,9 +67,7 @@ fun ChatsRoute(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier.fillMaxWidth(0.75f)
-            )
+            ModalDrawerSheet(modifier = Modifier.fillMaxWidth(DRAWER_WIDTH_FRACTION))
             {
                 ChatsDrawerContent(
                     searchQuery = state.searchQuery,
@@ -80,9 +77,7 @@ fun ChatsRoute(
                         when (item) {
                             DrawerItem.NEW_CHAT -> viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
                             DrawerItem.CHAT_LIST -> {}
-                            DrawerItem.IMAGES -> { /* TODO */
-                            }
-
+                            DrawerItem.IMAGES -> { /* TODO */ }
                             DrawerItem.PROFILE -> viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
                         }
                     }
