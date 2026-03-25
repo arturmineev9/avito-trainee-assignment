@@ -13,15 +13,15 @@ Android-приложение AI-ассистента, выполненное в 
 ### Скриншоты
 
 <p align="center">
-  <img src="docs/screenshots/auth_light.png" width="220" alt="Auth Screen Light"/>
-  <img src="docs/screenshots/chats_light.png" width="220" alt="Chats Screen Light"/>
-  <img src="docs/screenshots/chat_light.png" width="220" alt="Chat Screen Light"/>
+  <img src="docs/screenshots/auth_light.jpg" width="220" alt="Auth Screen Light"/>
+  <img src="docs/screenshots/chats_light.jpg" width="220" alt="Chats Screen Light"/>
+  <img src="docs/screenshots/chat_light.jpg" width="220" alt="Chat Screen Light"/>
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/profile_dark.png" width="220" alt="Profile Screen Dark"/>
-  <img src="docs/screenshots/search.png" width="220" alt="Search Chats"/>
-  <img src="docs/screenshots/rename_chat.png" width="220" alt="Rename Chat Dialog"/>
+  <img src="docs/screenshots/profile_dark.jpg" width="220" alt="Profile Screen Dark"/>
+  <img src="docs/screenshots/search.jpg" width="220" alt="Search Chats"/>
+  <img src="docs/screenshots/rename_chat.jpg" width="220" alt="Rename Chat Dialog"/>
 </p>
 
 ### Скринкаст
