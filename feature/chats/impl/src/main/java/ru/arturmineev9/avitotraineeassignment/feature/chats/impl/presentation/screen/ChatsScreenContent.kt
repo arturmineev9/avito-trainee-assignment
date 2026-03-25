@@ -1,13 +1,32 @@
 package ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -16,6 +35,7 @@ import androidx.paging.compose.itemKey
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsState
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.R
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.components.ChatItem
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.components.SearchBarTopBar
 
@@ -39,15 +59,15 @@ fun ChatsScreenContent(
                 )
             } else {
                 TopAppBar(
-                    title = { Text("Чаты", fontWeight = FontWeight.SemiBold) },
+                    title = { Text(stringResource(R.string.chats_title), fontWeight = FontWeight.SemiBold) },
                     navigationIcon = {
                         IconButton(onClick = { onEvent(ChatsEvent.OpenDrawerClicked) }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Меню")
+                            Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.cd_menu))
                         }
                     },
                     actions = {
                         IconButton(onClick = { onEvent(ChatsEvent.SearchIconClicked) }) {
-                            Icon(Icons.Default.Search, contentDescription = "Поиск")
+                            Icon(Icons.Default.Search, contentDescription = stringResource(R.string.cd_search))
                         }
                     }
                 )
@@ -66,7 +86,7 @@ fun ChatsScreenContent(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Icon(Icons.Default.Add, contentDescription = "Новый чат")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.cd_new_chat))
                 }
             }
         }
@@ -111,7 +131,10 @@ fun ChatsScreenContent(
                     loadState.refresh is LoadState.NotLoading && pagedChats.itemCount == 0 -> {
                         item {
                             Box(Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("Список чатов пуст", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(
+                                    text = stringResource(R.string.chats_empty_list),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
                         }
                     }

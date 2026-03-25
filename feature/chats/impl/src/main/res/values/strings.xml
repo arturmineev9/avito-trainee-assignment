@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chats_title">Чаты</string>
+    <string name="chats_search_placeholder">Поиск по чатам...</string>
+    <string name="chats_search_drawer_placeholder">Поиск по чатам</string>
+    <string name="chats_empty_list">Список чатов пуст</string>
+    <string name="chats_assistant_label">GigaChat AI Assistant</string>
+
+    <string name="drawer_new_chat">Новый чат</string>
+    <string name="drawer_images">Изображения</string>
+    <string name="drawer_chat_list">Список чатов</string>
+    <string name="drawer_profile">Профиль</string>
+
+    <string name="cd_back">Назад</string>
+    <string name="cd_clear">Очистить</string>
+    <string name="cd_menu">Меню</string>
+    <string name="cd_search">Поиск</string>
+    <string name="cd_new_chat">Новый чат</string>
+</resources>
