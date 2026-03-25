@@ -7,6 +7,9 @@ import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Mess
 
 data class ChatState(
     val chatId: String = "",
+    val chatTitle: String = "Загрузка...",
+    val isRenameDialogVisible: Boolean = false,
+    val renameInput: String = "",
     val messages: List<Message> = emptyList(),
     val inputText: String = "",
     val isAiTyping: Boolean = false,
@@ -18,6 +21,10 @@ sealed interface ChatEvent : UiEvent {
     data class InputTextChanged(val text: String) : ChatEvent
     object SendMessageClicked : ChatEvent
     data class ShareMessageClicked(val text: String) : ChatEvent
+    object RenameMenuClicked : ChatEvent
+    object RenameDialogDismissed : ChatEvent
+    data class RenameInputChanged(val text: String) : ChatEvent
+    object SaveNewTitleClicked : ChatEvent
 }
 
 sealed interface ChatEffect : UiEffect {
