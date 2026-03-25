@@ -16,9 +16,13 @@ sealed interface AuthEvent : UiEvent {
     data class PasswordChanged(val password: String) : AuthEvent
     object ToggleAuthModeClicked : AuthEvent
     object SubmitClicked : AuthEvent
+    data object GoogleSignInClicked : AuthEvent
+    data class GoogleTokenReceived(val idToken: String) : AuthEvent
+    data class GoogleSignInFailed(val error: String) : AuthEvent
 }
 
 sealed interface AuthEffect : UiEffect {
     object NavigateToChats : AuthEffect
     data class ShowError(val error: Throwable) : AuthEffect
+    data object LaunchGoogleSignIn : AuthEffect
 }
