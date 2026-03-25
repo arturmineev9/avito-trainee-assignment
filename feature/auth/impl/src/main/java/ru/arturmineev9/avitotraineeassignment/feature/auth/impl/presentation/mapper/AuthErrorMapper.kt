@@ -24,6 +24,7 @@ fun Throwable.toUiText(context: Context): String {
         is AuthException.UserNotFound -> context.getString(R.string.error_user_not_found)
         is AuthException.NetworkError -> context.getString(R.string.error_network)
         is AuthException.InvalidEmail -> context.getString(R.string.error_invalid_email)
+        is AuthException.EmailAlreadyInUse -> context.getString(R.string.error_email_already_in_use)
         is AuthException.WeakPassword -> context.getString(R.string.error_weak_password)
         else -> this.message ?: context.getString(R.string.error_unknown)
     }
