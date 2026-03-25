@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.arturmineev9.avitotraineeassignment.feature.chat.impl"
+    namespace = "ru.arturmineev9.avitotraineeassignment.feature.profile.impl"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt())
     }
@@ -42,9 +42,12 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:database"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:network"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:chat:api"))
+    implementation(project(":feature:profile:api"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -52,20 +55,24 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.coil.compose.base)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime)
 }

@@ -17,6 +17,7 @@ import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.ChatsNav
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.screen.AuthRoute
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.screen.ChatRoute
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.ChatsRoute
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.screen.ProfileRoute
 
 @Composable
 fun AppNavigation(startDestination: AppGraph = AppGraph.AuthGraph) {
@@ -66,9 +67,13 @@ fun AppNavigation(startDestination: AppGraph = AppGraph.AuthGraph) {
         }
 
         composable<AppGraph.ProfileGraph> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Профиль пользователя")
-            }
+            ProfileRoute(
+                onLogoutSuccess = {
+                    navController.navigate(AppGraph.AuthGraph) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }
