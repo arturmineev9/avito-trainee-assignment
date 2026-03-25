@@ -10,13 +10,19 @@ import javax.inject.Inject
 class LoginUseCaseImpl @Inject constructor(
     private val repository: AuthRepository
 ) : LoginUseCase {
+
+    companion object {
+        private const val MIN_PASSWORD_LENGTH = 6
+    }
+
     override suspend operator fun invoke(email: String, password: String): Result<AuthUser> {
-        if (email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return Result.failure(AuthException.InvalidEmail())
+        val isValidEmail = email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        val isValidPassword = password.length >= MIN_PASSWORD_LENGTH
+
+        return when {
+            !isValidEmail -> Result.failure(AuthException.InvalidEmail())
+            !isValidPassword -> Result.failure(AuthException.WeakPassword())
+            else -> repository.login(email, password)
         }
-        if (password.length < 6) {
-            return Result.failure(AuthException.WeakPassword())
-        }
-        return repository.login(email, password)
     }
 }

@@ -1,5 +1,6 @@
 package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.repository
 
+import android.database.SQLException
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -12,13 +13,17 @@ import ru.arturmineev9.avitotraineeassignment.core.database.entity.MessageEntity
 import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.ChatRequest
 import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.ChatResponse
 import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.MessageDto
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.ChatException
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Message
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.repository.ChatRepository
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.LocalChatDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.RemoteChatDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.mapper.toDomain
+import java.io.IOException
 import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class ChatRepositoryImpl @Inject constructor(
     private val localDataSource: LocalChatDataSource,
@@ -27,6 +32,10 @@ class ChatRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val chatDao: ChatDao
 ) : ChatRepository {
+
+    companion object {
+        private const val MAX_HISTORY_MESSAGES = 20
+    }
 
     override fun getMessages(chatId: String): Flow<List<Message>> {
         return localDataSource.getMessages(chatId).map { entities ->
@@ -37,26 +46,35 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun sendMessage(chatId: String, text: String): Result<Unit> =
         withContext(Dispatchers.IO) {
             try {
-                val uid = firebaseAuth.currentUser?.uid
-                    ?: throw IllegalStateException("Пользователь не авторизован")
+                val uid = checkNotNull(firebaseAuth.currentUser?.uid) { "Пользователь не авторизован" }
 
                 saveMessageLocally(chatId = chatId, text = text, isFromUser = true)
 
                 val chatRequest = buildChatRequest(chatId)
-
                 val response = fetchAiResponse(chatRequest)
 
-                val aiResponseText = response.choices.firstOrNull()?.message?.content
-                    ?: throw IllegalStateException("Пустой ответ от ИИ")
-
+                val aiResponseText = checkNotNull(response.choices.firstOrNull()?.message?.content) { "Пустой ответ от ИИ" }
 
                 saveMessageLocally(chatId = chatId, text = aiResponseText, isFromUser = false)
                 val usedTokens = response.usage.totalTokens
                 userBalanceManager.spendTokens(uid, usedTokens)
 
                 Result.success(Unit)
-            } catch (e: Exception) {
-                Result.failure(e)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: HttpException) {
+                val mappedError = when (e.code()) {
+                    401 -> ChatException.AuthError(e)
+                    429 -> ChatException.DailyLimitReached(e)
+                    else -> ChatException.Unknown(e.message(), e)
+                }
+                Result.failure(mappedError)
+            } catch (e: IOException) {
+                Result.failure(ChatException.NetworkError(e))
+            } catch (e: IllegalStateException) {
+                Result.failure(ChatException.Unknown(e.message, e))
+            } catch (e: SQLException) {
+                Result.failure(ChatException.Unknown("Ошибка базы данных", e))
             }
         }
 
@@ -69,8 +87,10 @@ class ChatRepositoryImpl @Inject constructor(
             try {
                 chatDao.updateChatTitle(chatId, title)
                 Result.success(Unit)
-            } catch (e: Exception) {
-                Result.failure(e)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: SQLException) {
+                Result.failure(ChatException.Unknown("Ошибка базы данных", e))
             }
         }
 
@@ -86,7 +106,7 @@ class ChatRepositoryImpl @Inject constructor(
     }
 
     private suspend fun buildChatRequest(chatId: String): ChatRequest {
-        val historyEntities = localDataSource.getMessages(chatId).first().takeLast(20)
+        val historyEntities = localDataSource.getMessages(chatId).first().takeLast(MAX_HISTORY_MESSAGES)
 
         val chatHistoryDtos = historyEntities.map { entity ->
             MessageDto(

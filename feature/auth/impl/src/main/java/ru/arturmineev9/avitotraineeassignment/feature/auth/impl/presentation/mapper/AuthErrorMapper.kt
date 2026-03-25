@@ -10,11 +10,11 @@ import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.R
 
 fun mapFirebaseException(e: Exception): AuthException {
     return when (e) {
-        is FirebaseAuthInvalidUserException -> AuthException.UserNotFound()
-        is FirebaseAuthInvalidCredentialsException -> AuthException.InvalidCredentials()
-        is FirebaseAuthUserCollisionException -> AuthException.EmailAlreadyInUse()
-        is FirebaseNetworkException -> AuthException.NetworkError()
-        else -> AuthException.Unknown(e.message)
+        is FirebaseAuthInvalidUserException -> AuthException.UserNotFound(e)
+        is FirebaseAuthInvalidCredentialsException -> AuthException.InvalidCredentials(e)
+        is FirebaseAuthUserCollisionException -> AuthException.EmailAlreadyInUse(e)
+        is FirebaseNetworkException -> AuthException.NetworkError(e)
+        else -> AuthException.Unknown(e.message, e)
     }
 }
 

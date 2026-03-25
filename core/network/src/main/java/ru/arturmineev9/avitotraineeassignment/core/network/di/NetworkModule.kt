@@ -31,6 +31,8 @@ annotation class ApiNetwork
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    private const val AUTH_TIMEOUT_SECONDS = 30L
+    private const val API_TIMEOUT_SECONDS = 60L
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -52,8 +54,8 @@ object NetworkModule {
     fun provideAuthOkHttpClient(loggingInterceptor: HttpLoggingInterceptor) : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(AUTH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(AUTH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 
@@ -83,8 +85,8 @@ object NetworkModule {
             .addInterceptor(authInterceptor)
             .authenticator(authenticator)
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 

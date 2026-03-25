@@ -1,8 +1,10 @@
 package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.screen
 
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatState
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.screen.components.ChatInputBar

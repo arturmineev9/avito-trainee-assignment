@@ -70,15 +70,9 @@ class ChatViewModel @Inject constructor(
             result.onSuccess {
                 setEffect { ChatEffect.ScrollToBottom }
             }.onFailure { error ->
-                val chatError = when {
-                    error is java.net.UnknownHostException -> ChatException.NetworkError()
-                    error.message?.contains("401") == true -> ChatException.AuthError()
-                    error.message?.contains("429") == true -> ChatException.DailyLimitReached()
-                    else -> ChatException.Unknown(error.message)
-                }
+                val chatError = error as? ChatException ?: ChatException.Unknown(error.message, error)
                 setEffect { ChatEffect.ShowError(chatError) }
             }
-
             setState { copy(isAiTyping = false) }
         }
     }

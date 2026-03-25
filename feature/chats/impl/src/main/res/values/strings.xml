@@ -16,4 +16,9 @@
     <string name="cd_menu">Меню</string>
     <string name="cd_search">Поиск</string>
     <string name="cd_new_chat">Новый чат</string>
+
+    <string name="error_chats_database">Ошибка базы данных. Попробуйте перезапустить приложение.</string>
+    <string name="error_chats_disk_full">Недостаточно места на устройстве.</string>
+    <string name="error_chats_not_found">Чат не найден или был удален.</string>
+    <string name="error_chats_unknown">Произошла неизвестная ошибка</string>
 </resources>
