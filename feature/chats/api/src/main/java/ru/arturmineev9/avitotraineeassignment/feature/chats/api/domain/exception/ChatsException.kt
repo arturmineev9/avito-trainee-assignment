@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model
+package ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception
 
 sealed class ChatsException : Throwable() {
     class DatabaseError : ChatsException()

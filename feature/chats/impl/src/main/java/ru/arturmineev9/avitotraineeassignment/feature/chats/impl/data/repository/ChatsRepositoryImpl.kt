@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import ru.arturmineev9.avitotraineeassignment.core.database.dao.ChatDao
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.ChatEntity
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
-import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.ChatsException
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception.ChatsException
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.repository.ChatsRepository
 import java.util.UUID
 import javax.inject.Inject

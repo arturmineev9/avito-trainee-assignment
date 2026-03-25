@@ -5,6 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.ui.mvi.BaseViewModel
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.GetProfileUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.LogoutUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.ThemeUseCases
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.UpdateNameUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.UploadAvatarUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEffect
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEvent
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileState

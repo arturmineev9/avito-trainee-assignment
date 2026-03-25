@@ -15,7 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEvent
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.mapper.toUiText
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.mapper.toUiText
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.viewmodel.ChatViewModel
 
 @Composable

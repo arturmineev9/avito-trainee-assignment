@@ -1,4 +1,4 @@
-package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.mapper
+package ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.mapper
 
 import android.content.Context
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.ChatException

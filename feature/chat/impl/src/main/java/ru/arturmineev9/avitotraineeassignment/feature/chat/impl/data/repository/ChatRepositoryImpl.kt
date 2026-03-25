@@ -16,7 +16,7 @@ import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Mess
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.repository.ChatRepository
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.LocalChatDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.RemoteChatDataSource
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.mapper.toDomain
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.mapper.toDomain
 import java.util.UUID
 import javax.inject.Inject
 

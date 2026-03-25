@@ -5,12 +5,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.ui.mvi.BaseViewModel
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.exception.AuthException
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.usecase.LoginUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.usecase.LoginWithGoogleUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.usecase.RegisterUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthEffect
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthEvent
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthState
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.domain.usecase.LoginUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.domain.usecase.LoginWithGoogleUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.domain.usecase.RegisterUseCase
 import javax.inject.Inject
 
 @HiltViewModel

@@ -14,11 +14,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.ui.mvi.BaseViewModel
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.usecase.CreateNewChatUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.usecase.GetChatsUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsState
-import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.domain.CreateNewChatUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.domain.GetChatsUseCase
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
