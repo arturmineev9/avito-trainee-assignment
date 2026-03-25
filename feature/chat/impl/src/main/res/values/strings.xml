@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_menu_content_desc">Меню чата</string>
+    <string name="chat_menu_rename">Изменить название</string>
+    <string name="chat_ai_typing">ИИ печатает...</string>
+    <string name="chat_input_placeholder">Сообщение...</string>
+
+    <string name="dialog_rename_title">Изменить название</string>
+    <string name="dialog_rename_label">Название чата</string>
+    <string name="dialog_save">Сохранить</string>
+    <string name="dialog_cancel">Отмена</string>
+</resources>

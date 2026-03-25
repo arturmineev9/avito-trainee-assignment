@@ -11,16 +11,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.R
 
 @Composable
 fun TypingIndicator() {
-    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.CenterStart) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
         Card(
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
-            Text("ИИ печатает...", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = stringResource(R.string.chat_ai_typing),
+                modifier = Modifier.padding(12.dp),
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }
