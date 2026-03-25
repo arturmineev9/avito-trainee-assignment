@@ -17,7 +17,7 @@ import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.R
 fun ChatsDrawerContent(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    onMenuItemClick: (DrawerItem) -> Unit // Объединили 4 параметра в один!
+    onMenuItemClick: (DrawerItem) -> Unit
 ) {
     Column(
         modifier = Modifier

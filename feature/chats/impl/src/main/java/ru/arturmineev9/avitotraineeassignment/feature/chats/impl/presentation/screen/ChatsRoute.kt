@@ -1,5 +1,6 @@
 package ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -11,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -66,7 +68,10 @@ fun ChatsRoute(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                modifier = Modifier.fillMaxWidth(0.75f)
+            )
+            {
                 ChatsDrawerContent(
                     searchQuery = state.searchQuery,
                     onSearchQueryChange = { viewModel.onEvent(ChatsEvent.SearchQueryChanged(it)) },
@@ -74,8 +79,10 @@ fun ChatsRoute(
                         scope.launch { drawerState.close() }
                         when (item) {
                             DrawerItem.NEW_CHAT -> viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
-                            DrawerItem.CHAT_LIST -> {  }
-                            DrawerItem.IMAGES -> { /* TODO */ }
+                            DrawerItem.CHAT_LIST -> {}
+                            DrawerItem.IMAGES -> { /* TODO */
+                            }
+
                             DrawerItem.PROFILE -> viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
                         }
                     }

@@ -4,12 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.data.datastore.ProfileFileDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.repository.ProfileRepository
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.GetProfileUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.LogoutUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.ThemeUseCases
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.UpdateNameUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.usecase.UploadAvatarUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.datasource.ProfileFileDataSourceImpl
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.repository.ProfileRepositoryImpl
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.domain.usecase.GetProfileUseCaseImpl
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.domain.usecase.LogoutUseCaseImpl
@@ -57,4 +59,9 @@ abstract class ProfileBindsModule {
     abstract fun bindUploadAvatarUseCase(
         impl: UploadAvatarUseCaseImpl
     ): UploadAvatarUseCase
+
+    @Binds
+    abstract fun bindProfileFileDataSource(
+        impl: ProfileFileDataSourceImpl
+    ): ProfileFileDataSource
 }

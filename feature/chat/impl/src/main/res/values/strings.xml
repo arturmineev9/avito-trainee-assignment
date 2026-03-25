@@ -14,5 +14,6 @@
     <string name="error_chat_auth">Ошибка авторизации GigaChat</string>
     <string name="error_chat_limit_reached">Лимит запросов исчерпан. Попробуйте позже</string>
     <string name="error_chat_empty_response">ИИ не смог ответить на этот вопрос</string>
+    <string name="error_chat_out_of_tokens">У вас закончились токены для сообщений</string>
     <string name="error_chat_unknown">Неизвестная ошибка чата</string>
 </resources>

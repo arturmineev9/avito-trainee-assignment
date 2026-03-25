@@ -50,6 +50,11 @@ class ChatRepositoryImpl @Inject constructor(
             try {
                 val uid = checkNotNull(firebaseAuth.currentUser?.uid) { "Пользователь не авторизован" }
 
+                val currentTokens = userBalanceManager.getUserTokens(uid)
+                if (currentTokens <= 0) {
+                    return@withContext Result.failure(ChatException.OutOfTokens())
+                }
+                
                 saveMessageLocally(chatId = chatId, text = text, isFromUser = true)
 
                 val chatRequest = buildChatRequest(chatId)
