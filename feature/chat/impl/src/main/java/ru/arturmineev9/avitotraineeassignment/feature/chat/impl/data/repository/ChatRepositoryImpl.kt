@@ -16,14 +16,14 @@ import ru.arturmineev9.avitotraineeassignment.core.network.dto.chat.MessageDto
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.ChatException
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.model.Message
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.repository.ChatRepository
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.LocalChatDataSource
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.RemoteChatDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.presentation.mapper.toDomain
 import java.io.IOException
 import java.util.UUID
 import kotlin.coroutines.cancellation.CancellationException
 import javax.inject.Inject
 import retrofit2.HttpException
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.data.datasource.LocalChatDataSource
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.data.datasource.RemoteChatDataSource
 
 class ChatRepositoryImpl @Inject constructor(
     private val localDataSource: LocalChatDataSource,

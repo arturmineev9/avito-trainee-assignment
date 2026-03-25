@@ -16,10 +16,10 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import ru.arturmineev9.avitotraineeassignment.core.common.datastore.settings.SettingsManager
 import ru.arturmineev9.avitotraineeassignment.core.common.datastore.userbalance.UserBalanceManager
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.data.datastore.ProfileFileDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.exception.ProfileException
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.model.UserProfile
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.domain.repository.ProfileRepository
-import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.datasource.ProfileFileDataSource
 import java.io.IOException
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException

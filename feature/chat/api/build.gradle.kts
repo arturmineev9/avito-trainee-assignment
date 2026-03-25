@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:database"))
+    implementation(project(":core:network"))
     api(project(":core:ui"))
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.detekt.compose)

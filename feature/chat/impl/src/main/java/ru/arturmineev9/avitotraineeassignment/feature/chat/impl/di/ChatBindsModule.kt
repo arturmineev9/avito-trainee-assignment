@@ -4,11 +4,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.data.datasource.LocalChatDataSource
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.data.datasource.RemoteChatDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.repository.ChatRepository
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.GetChatTitleUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.GetMessagesUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.SendMessageUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.UpdateChatTitleUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.LocalChatDataSourceImpl
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.datasource.RemoteChatDataSourceImpl
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.data.repository.ChatRepositoryImpl
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetChatTitleUseCaseImpl
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetMessagesUseCaseImpl
@@ -49,4 +53,14 @@ abstract class ChatBindsModule {
     abstract fun bindUpdateChatTitleUseCase(
         impl: UpdateChatTitleUseCaseImpl
     ): UpdateChatTitleUseCase
+
+    @Binds
+    abstract fun bindLocalChatDataSource(
+        impl: LocalChatDataSourceImpl
+    ): LocalChatDataSource
+
+    @Binds
+    abstract fun bindRemoteChatDataSource(
+        impl: RemoteChatDataSourceImpl
+    ): RemoteChatDataSource
 }

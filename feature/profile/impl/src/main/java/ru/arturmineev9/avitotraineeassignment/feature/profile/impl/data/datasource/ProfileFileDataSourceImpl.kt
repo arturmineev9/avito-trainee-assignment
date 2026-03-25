@@ -3,14 +3,20 @@ package ru.arturmineev9.avitotraineeassignment.feature.profile.impl.data.datasou
 import android.content.Context
 import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ru.arturmineev9.avitotraineeassignment.feature.profile.api.data.datastore.ProfileFileDataSource
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-class ProfileFileDataSource @Inject constructor(
+// В связи с тем, что Firebase ввёл платежные ограничения на Firebase Storage,
+// загрузить аватарку на облако возможности нет
+
+class ProfileFileDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
-    fun saveAvatar(imageUri: Uri, userId: String): String {
+) : ProfileFileDataSource {
+
+    override fun saveAvatar(imageUri: Uri, userId: String): String {
+        // Удаляем старые аватарки пользователя
         context.filesDir.listFiles { _, name -> name.startsWith("avatar_$userId") }
             ?.forEach { it.delete() }
 

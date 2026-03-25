@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.arturmineev9.avitotraineeassignment.core.database.dao.ChatDao
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.ChatEntity
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.data.datasource.LocalChatsDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception.ChatsException
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.repository.ChatsRepository
@@ -20,7 +21,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import javax.inject.Inject
 
 class ChatsRepositoryImpl @Inject constructor(
-    private val chatDao: ChatDao
+    private val localDataSource: LocalChatsDataSource
 ) : ChatsRepository {
 
     private val pagingConfig = PagingConfig(
@@ -32,18 +33,16 @@ class ChatsRepositoryImpl @Inject constructor(
     override fun getChatsPaged(): Flow<PagingData<Chat>> {
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = chatDao::getChatsPaged
+            pagingSourceFactory = localDataSource::getChatsPaged
         ).flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
     }
 
     override fun searchChatsPaged(query: String): Flow<PagingData<Chat>> {
-        val ftsQuery = "$query*"
-
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = { chatDao.searchChatsPaged(ftsQuery) }
+            pagingSourceFactory = { localDataSource.searchChatsPaged(query) }
         ).flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
@@ -61,7 +60,7 @@ class ChatsRepositoryImpl @Inject constructor(
                     createdAt = currentTime
                 )
 
-                chatDao.insertChat(newChat)
+                localDataSource.insertChat(newChat)
                 Result.success(newChatId)
             } catch (e: CancellationException) {
                 throw e
