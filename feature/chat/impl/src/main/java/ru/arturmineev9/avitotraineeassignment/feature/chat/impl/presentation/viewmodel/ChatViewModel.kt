@@ -9,14 +9,18 @@ import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatState
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetChatTitleUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetMessagesUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.SendMessageUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.UpdateChatTitleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val getMessagesUseCase: GetMessagesUseCase,
-    private val sendMessageUseCase: SendMessageUseCase
+    private val sendMessageUseCase: SendMessageUseCase,
+    private val getChatTitleUseCase: GetChatTitleUseCase,
+    private val updateChatTitleUseCase: UpdateChatTitleUseCase
 ) : BaseViewModel<ChatState, ChatEvent, ChatEffect>(ChatState()) {
 
     override fun onEvent(event: ChatEvent) {
@@ -25,6 +29,16 @@ class ChatViewModel @Inject constructor(
             is ChatEvent.InputTextChanged -> setState { copy(inputText = event.text) }
             is ChatEvent.SendMessageClicked -> sendMessage()
             is ChatEvent.ShareMessageClicked -> setEffect { ChatEffect.ShareText(event.text) }
+            is ChatEvent.RenameMenuClicked -> setState {
+                copy(
+                    isRenameDialogVisible = true,
+                    renameInput = currentState.chatTitle
+                )
+            }
+
+            is ChatEvent.RenameDialogDismissed -> setState { copy(isRenameDialogVisible = false) }
+            is ChatEvent.RenameInputChanged -> setState { copy(renameInput = event.text) }
+            is ChatEvent.SaveNewTitleClicked -> saveNewTitle()
         }
     }
 
@@ -34,6 +48,11 @@ class ChatViewModel @Inject constructor(
             getMessagesUseCase(chatId).collectLatest { list ->
                 setState { copy(messages = list) }
                 setEffect { ChatEffect.ScrollToBottom }
+            }
+        }
+        viewModelScope.launch {
+            getChatTitleUseCase(chatId).collect { title ->
+                setState { copy(chatTitle = title) }
             }
         }
     }
@@ -61,6 +80,16 @@ class ChatViewModel @Inject constructor(
             }
 
             setState { copy(isAiTyping = false) }
+        }
+    }
+
+    private fun saveNewTitle() {
+        val newTitle = currentState.renameInput.trim()
+        if (newTitle.isBlank()) return
+
+        viewModelScope.launch {
+            updateChatTitleUseCase(currentState.chatId, newTitle)
+            setState { copy(isRenameDialogVisible = false) }
         }
     }
 }
