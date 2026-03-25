@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -41,15 +40,7 @@ fun AvatarSection(
 
         if (isUploading) {
             CircularProgressIndicator(modifier = Modifier.size(40.dp))
-        } else {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .background(MaterialTheme.colorScheme.primary, CircleShape)
-                    .padding(6.dp)
-            ) {
-                Icon(Icons.Default.PhotoCamera, null, Modifier.size(16.dp), tint = Color.White)
-            }
         }
     }
 }
+

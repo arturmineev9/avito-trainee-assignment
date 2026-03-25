@@ -1,5 +1,6 @@
-package ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation
+package ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -50,7 +51,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun performUploadAvatar(uri: android.net.Uri) {
+    private fun performUploadAvatar(uri: Uri) {
         viewModelScope.launch {
             setState { copy(isUploadingImage = true) }
             uploadAvatarUseCase(uri).onFailure { error ->
@@ -65,9 +66,19 @@ class ProfileViewModel @Inject constructor(
         if (newName.isBlank()) return
 
         viewModelScope.launch {
+            setState { copy(isUpdatingName = true) }
+
             updateNameUseCase(newName).onSuccess {
-                setState { copy(isEditingName = false) }
+                setState {
+                    copy(
+                        isEditingName = false,
+                        isUpdatingName = false,
+                        profile = currentState.profile?.copy(name = newName)
+                    )
+                }
+                setEffect { ProfileEffect.ShowMessage("Имя успешно обновлено") }
             }.onFailure { error ->
+                setState { copy(isUpdatingName = false) }
                 setEffect { ProfileEffect.ShowError(error) }
             }
         }

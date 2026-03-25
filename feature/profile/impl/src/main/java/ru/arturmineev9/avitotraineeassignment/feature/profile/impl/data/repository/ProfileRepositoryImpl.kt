@@ -65,6 +65,7 @@ class ProfileRepositoryImpl @Inject constructor(
                 displayName = newName
             }
             user.updateProfile(profileUpdates).await()
+            user.reload().await()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(mapToProfileException(e))

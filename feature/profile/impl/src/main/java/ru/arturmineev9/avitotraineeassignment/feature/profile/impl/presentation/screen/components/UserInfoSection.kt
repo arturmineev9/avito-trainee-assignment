@@ -28,7 +28,8 @@ fun UserInfoSection(
                 NameEditField(
                     value = state.editNameInput,
                     onValueChange = { onEvent(ProfileEvent.NameInputChanged(it)) },
-                    onSave = { onEvent(ProfileEvent.SaveNameClicked) }
+                    onSave = { onEvent(ProfileEvent.SaveNameClicked) },
+                    isLoading = state.isUpdatingName
                 )
             } else {
                 ProfileDataRow(

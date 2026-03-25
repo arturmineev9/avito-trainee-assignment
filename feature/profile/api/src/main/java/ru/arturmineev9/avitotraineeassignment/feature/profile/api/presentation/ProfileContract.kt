@@ -10,6 +10,7 @@ data class ProfileState(
     val profile: UserProfile? = null,
     val isLoading: Boolean = true,
     val isUploadingImage: Boolean = false,
+    val isUpdatingName: Boolean = false,
     val isEditingName: Boolean = false,
     val editNameInput: String = "",
     val isDarkTheme: Boolean = false

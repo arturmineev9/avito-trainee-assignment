@@ -13,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEffect
 import ru.arturmineev9.avitotraineeassignment.feature.profile.api.presentation.ProfileEvent
-import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.ProfileViewModel
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.viewmodel.ProfileViewModel
 import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.presentation.mapper.toUiText
 
 @Composable
