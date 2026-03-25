@@ -111,6 +111,28 @@ fun AuthScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+                Text("ИЛИ", color = MaterialTheme.colorScheme.outline)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedButton(
+                    onClick = { onEvent(AuthEvent.GoogleSignInClicked) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    enabled = !state.isLoading
+                ) {
+                    if (state.isLoading) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Войти через Google")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(
                     onClick = { onEvent(AuthEvent.ToggleAuthModeClicked) },

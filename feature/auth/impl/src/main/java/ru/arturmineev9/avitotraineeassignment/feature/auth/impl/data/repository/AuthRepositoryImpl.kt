@@ -1,6 +1,7 @@
 package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.exception.AuthException
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.model.AuthUser
@@ -49,5 +50,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         firebaseAuth.signOut()
+    }
+
+    override suspend fun loginWithGoogle(idToken: String): Result<AuthUser> {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            val user = result.user ?: throw AuthException.UserNotFound()
+            Result.success(user.toDomain())
+        } catch (e: Exception) {
+            Result.failure(mapFirebaseException(e))
+        }
     }
 }

@@ -6,4 +6,5 @@
     <string name="error_invalid_email">Введите корректный Email</string>
     <string name="error_weak_password">Пароль должен содержать минимум 6 символов</string>
     <string name="error_unknown">Произошла неизвестная ошибка</string>
+    <string name="default_web_client_id">279111396512-v77huf3drvv5rqd1p9nb90d7v98iseio.apps.googleusercontent.com</string>
 </resources>

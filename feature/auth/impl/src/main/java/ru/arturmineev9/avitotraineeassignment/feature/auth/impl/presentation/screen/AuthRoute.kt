@@ -16,7 +16,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.AuthNavigator
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthEffect
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.presentation.AuthEvent
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.toUiText
+import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.google.launchGoogleSignIn
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.viewmodel.AuthViewModel
 
 @Composable
@@ -39,6 +41,20 @@ fun AuthRoute(
                             message = effect.error.toUiText(context),
                             duration = SnackbarDuration.Short
                         )
+                    }
+
+                    is AuthEffect.LaunchGoogleSignIn -> {
+                        val result = launchGoogleSignIn(context)
+
+                        result.onSuccess { idToken ->
+                            viewModel.onEvent(AuthEvent.GoogleTokenReceived(idToken))
+                        }.onFailure { error ->
+                            viewModel.onEvent(
+                                AuthEvent.GoogleSignInFailed(
+                                    error.message ?: "Ошибка"
+                                )
+                            )
+                        }
                     }
                 }
             }

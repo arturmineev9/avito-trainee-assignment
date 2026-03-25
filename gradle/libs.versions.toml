@@ -7,12 +7,15 @@ compileSdk = "36"
 composeBom = "2024.09.00"
 coreKtx = "1.18.0"
 coreSplash = "1.2.0"
+credentials = "1.5.0"
+credentialsPlayServicesAuth = "1.5.0"
 datastorePreferences = "1.2.1"
 datastorePreferencesCore = "1.2.1"
 detekt = "1.23.8"
 detektCompose = "0.4.22"
 espressoCore = "3.7.0"
 firebaseBom = "34.7.0"
+googleid = "1.2.0"
 googleServices = "4.4.1"
 hilt = "2.56.2"
 hiltCompose = "1.2.0"
@@ -49,6 +52,8 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplash" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -64,6 +69,7 @@ detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "det
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
