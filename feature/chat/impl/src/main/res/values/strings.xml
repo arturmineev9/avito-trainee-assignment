@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_menu_content_desc">Меню чата</string>
+    <string name="chat_menu_rename">Изменить название</string>
+    <string name="chat_ai_typing">ИИ печатает...</string>
+    <string name="chat_input_placeholder">Сообщение...</string>
+
+    <string name="dialog_rename_title">Изменить название</string>
+    <string name="dialog_rename_label">Название чата</string>
+    <string name="dialog_save">Сохранить</string>
+    <string name="dialog_cancel">Отмена</string>
+
+    <string name="error_chat_network">Проверьте соединение с интернетом</string>
+    <string name="error_chat_auth">Ошибка авторизации GigaChat</string>
+    <string name="error_chat_limit_reached">Лимит запросов исчерпан. Попробуйте позже</string>
+    <string name="error_chat_empty_response">ИИ не смог ответить на этот вопрос</string>
+    <string name="error_chat_out_of_tokens">У вас закончились токены для сообщений</string>
+    <string name="error_chat_unknown">Неизвестная ошибка чата</string>
+</resources>

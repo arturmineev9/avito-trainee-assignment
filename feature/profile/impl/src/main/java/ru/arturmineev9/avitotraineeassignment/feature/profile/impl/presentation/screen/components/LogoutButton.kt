@@ -14,8 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.R
 
 @Composable
 fun LogoutButton(onLogout: () -> Unit) {
@@ -30,6 +32,6 @@ fun LogoutButton(onLogout: () -> Unit) {
     ) {
         Icon(Icons.Default.ExitToApp, null)
         Spacer(Modifier.width(8.dp))
-        Text("Выйти из аккаунта", fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.profile_logout_button), fontWeight = FontWeight.Bold)
     }
 }

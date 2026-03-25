@@ -1,10 +1,13 @@
 package ru.arturmineev9.avitotraineeassignment.core.network.auth
 
+import android.util.Log
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import retrofit2.HttpException
 import ru.arturmineev9.avitotraineeassignment.core.network.BuildConfig
 import ru.arturmineev9.avitotraineeassignment.core.network.api.GigaChatAuthApi
 import ru.arturmineev9.avitotraineeassignment.core.network.api.TokenProvider
+import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,7 +30,11 @@ class TokenManager @Inject constructor(
             )
             cachedToken = response.accessToken
             cachedToken
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            Log.e("TokenManager", "Network error while refreshing token", e)
+            null
+        } catch (e: HttpException) {
+            Log.e("TokenManager", "HTTP error while refreshing token", e)
             null
         }
     }

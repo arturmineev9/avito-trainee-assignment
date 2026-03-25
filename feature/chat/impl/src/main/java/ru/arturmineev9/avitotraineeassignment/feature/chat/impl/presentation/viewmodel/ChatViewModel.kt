@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.arturmineev9.avitotraineeassignment.core.ui.mvi.BaseViewModel
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.exception.ChatException
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.GetChatTitleUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.GetMessagesUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.SendMessageUseCase
+import ru.arturmineev9.avitotraineeassignment.feature.chat.api.domain.usecase.UpdateChatTitleUseCase
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chat.api.presentation.ChatState
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetChatTitleUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.GetMessagesUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.SendMessageUseCase
-import ru.arturmineev9.avitotraineeassignment.feature.chat.impl.domain.usecase.UpdateChatTitleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,15 +70,9 @@ class ChatViewModel @Inject constructor(
             result.onSuccess {
                 setEffect { ChatEffect.ScrollToBottom }
             }.onFailure { error ->
-                val chatError = when {
-                    error is java.net.UnknownHostException -> ChatException.NetworkError()
-                    error.message?.contains("401") == true -> ChatException.AuthError()
-                    error.message?.contains("429") == true -> ChatException.DailyLimitReached()
-                    else -> ChatException.Unknown(error.message)
-                }
+                val chatError = error as? ChatException ?: ChatException.Unknown(error.message, error)
                 setEffect { ChatEffect.ShowError(chatError) }
             }
-
             setState { copy(isAiTyping = false) }
         }
     }

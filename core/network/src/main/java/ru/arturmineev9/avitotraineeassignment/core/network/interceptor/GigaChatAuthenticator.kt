@@ -12,20 +12,19 @@ class GigaChatAuthenticator @Inject constructor(
     private val tokenManager: TokenManager
 ) : Authenticator {
 
+    companion object {
+        private const val MAX_RETRIES = 3
+    }
+
     override fun authenticate(route: Route?, response: Response): Request? {
-        if (response.responseCount >= 3) {
+        if (response.responseCount >= MAX_RETRIES) {
             return null
         }
-
-        val newToken = runBlocking { tokenManager.refreshToken() }
-
-        if (newToken == null) {
-            return null
+        return runBlocking { tokenManager.refreshToken() }?.let { newToken ->
+            response.request.newBuilder()
+                .header("Authorization", "Bearer $newToken")
+                .build()
         }
-
-        return response.request.newBuilder()
-            .header("Authorization", "Bearer $newToken")
-            .build()
     }
 }
 

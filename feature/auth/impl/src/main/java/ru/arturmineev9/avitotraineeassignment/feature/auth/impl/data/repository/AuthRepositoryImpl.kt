@@ -1,13 +1,15 @@
 package ru.arturmineev9.avitotraineeassignment.feature.auth.impl.data.repository
 
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.exception.AuthException
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.model.AuthUser
 import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.repository.AuthRepository
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.mapFirebaseException
-import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.mapper.toDomain
+import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper.mapFirebaseException
+import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.presentation.mapper.toDomain
+import java.io.IOException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -28,8 +30,10 @@ class AuthRepositoryImpl @Inject constructor(
             } else {
                 Result.failure(AuthException.UserNotFound())
             }
-        } catch (e: Exception) {
+        } catch (e: FirebaseException) {
             Result.failure(mapFirebaseException(e))
+        } catch (e: IOException) {
+            Result.failure(AuthException.NetworkError(e))
         }
     }
 
@@ -43,8 +47,10 @@ class AuthRepositoryImpl @Inject constructor(
             } else {
                 Result.failure(AuthException.Unknown("User is null after registration"))
             }
-        } catch (e: Exception) {
+        } catch (e: FirebaseException) {
             Result.failure(mapFirebaseException(e))
+        } catch (e: IOException) {
+            Result.failure(AuthException.NetworkError(e))
         }
     }
 
@@ -58,8 +64,10 @@ class AuthRepositoryImpl @Inject constructor(
             val result = firebaseAuth.signInWithCredential(credential).await()
             val user = result.user ?: throw AuthException.UserNotFound()
             Result.success(user.toDomain())
-        } catch (e: Exception) {
+        } catch (e: FirebaseException) {
             Result.failure(mapFirebaseException(e))
+        } catch (e: IOException) {
+            Result.failure(AuthException.NetworkError(e))
         }
     }
 }

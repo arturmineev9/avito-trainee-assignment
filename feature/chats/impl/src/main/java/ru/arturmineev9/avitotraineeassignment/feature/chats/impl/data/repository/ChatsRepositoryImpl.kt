@@ -12,14 +12,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.arturmineev9.avitotraineeassignment.core.database.dao.ChatDao
 import ru.arturmineev9.avitotraineeassignment.core.database.entity.ChatEntity
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.data.datasource.LocalChatsDataSource
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.Chat
-import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.model.ChatsException
+import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.exception.ChatsException
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.domain.repository.ChatsRepository
 import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 import javax.inject.Inject
 
 class ChatsRepositoryImpl @Inject constructor(
-    private val chatDao: ChatDao
+    private val localDataSource: LocalChatsDataSource
 ) : ChatsRepository {
 
     private val pagingConfig = PagingConfig(
@@ -31,45 +33,43 @@ class ChatsRepositoryImpl @Inject constructor(
     override fun getChatsPaged(): Flow<PagingData<Chat>> {
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = chatDao::getChatsPaged
+            pagingSourceFactory = localDataSource::getChatsPaged
         ).flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
     }
 
     override fun searchChatsPaged(query: String): Flow<PagingData<Chat>> {
-        val ftsQuery = "$query*"
-
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = { chatDao.searchChatsPaged(ftsQuery) }
+            pagingSourceFactory = { localDataSource.searchChatsPaged(query) }
         ).flow.map { pagingData ->
             pagingData.map { it.toDomain() }
         }
     }
 
-    override suspend fun createNewChat(title: String): Result<String> = withContext(Dispatchers.IO) {
-        return@withContext try {
-            val newChatId = UUID.randomUUID().toString()
-            val currentTime = System.currentTimeMillis()
+    override suspend fun createNewChat(title: String): Result<String> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                val newChatId = UUID.randomUUID().toString()
+                val currentTime = System.currentTimeMillis()
 
-            val newChat = ChatEntity(
-                id = newChatId,
-                title = title,
-                createdAt = currentTime
-            )
+                val newChat = ChatEntity(
+                    id = newChatId,
+                    title = title,
+                    createdAt = currentTime
+                )
 
-            chatDao.insertChat(newChat)
-            Result.success(newChatId)
-        } catch (e: Exception) {
-            val domainError = when (e) {
-                is SQLiteDiskIOException -> ChatsException.DiskFull()
-                is SQLiteException -> ChatsException.DatabaseError()
-                else -> ChatsException.Unknown(e.message)
+                localDataSource.insertChat(newChat)
+                Result.success(newChatId)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: SQLiteDiskIOException) {
+                Result.failure(ChatsException.DiskFull(e))
+            } catch (e: SQLiteException) {
+                Result.failure(ChatsException.DatabaseError(e))
             }
-            Result.failure(domainError)
         }
-    }
 
     private fun ChatEntity.toDomain(): Chat {
         return Chat(

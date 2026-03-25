@@ -4,14 +4,15 @@ import android.content.Context
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import ru.arturmineev9.avitotraineeassignment.feature.auth.api.domain.exception.AuthException
 import ru.arturmineev9.avitotraineeassignment.feature.auth.impl.R
 
 suspend fun launchGoogleSignIn(context: Context): Result<String> {
     return try {
         val credentialManager = CredentialManager.create(context)
-
         val webClientId = context.getString(R.string.default_web_client_id)
 
         val googleIdOption = GetGoogleIdOption.Builder()
@@ -31,9 +32,9 @@ suspend fun launchGoogleSignIn(context: Context): Result<String> {
             val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
             Result.success(googleIdTokenCredential.idToken)
         } else {
-            Result.failure(Exception("Неподдерживаемый тип авторизации"))
+            Result.failure(AuthException.Unknown("Неподдерживаемый тип авторизации"))
         }
-    } catch (e: Exception) {
+    } catch (e: GetCredentialException) {
         Result.failure(e)
     }
 }

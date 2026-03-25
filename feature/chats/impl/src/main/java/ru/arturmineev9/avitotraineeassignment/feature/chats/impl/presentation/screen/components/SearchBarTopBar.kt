@@ -14,10 +14,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
- fun SearchBarTopBar(
+fun SearchBarTopBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onCloseClick: () -> Unit
@@ -27,7 +29,7 @@ import androidx.compose.ui.graphics.Color
             TextField(
                 value = query,
                 onValueChange = onQueryChange,
-                placeholder = { Text("Поиск по чатам...") },
+                placeholder = { Text(stringResource(R.string.chats_search_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -41,13 +43,13 @@ import androidx.compose.ui.graphics.Color
         },
         navigationIcon = {
             IconButton(onClick = onCloseClick) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
+                Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.cd_back))
             }
         },
         actions = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = { onQueryChange("") }) {
-                    Icon(Icons.Default.Clear, contentDescription = "Очистить")
+                    Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.cd_clear))
                 }
             }
         }

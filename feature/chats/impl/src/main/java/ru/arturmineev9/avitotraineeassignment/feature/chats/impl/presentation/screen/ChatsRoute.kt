@@ -1,7 +1,18 @@
 package ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen
 
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -14,8 +25,11 @@ import ru.arturmineev9.avitotraineeassignment.core.navigation.navigator.ChatsNav
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEffect
 import ru.arturmineev9.avitotraineeassignment.feature.chats.api.presentation.ChatsEvent
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.mapper.toUiText
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.drawer.ChatsDrawerContent
+import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.screen.drawer.DrawerItem
 import ru.arturmineev9.avitotraineeassignment.feature.chats.impl.presentation.viewmodel.ChatsViewModel
 
+private const val DRAWER_WIDTH_FRACTION = 0.75f
 @Composable
 fun ChatsRoute(
     navigator: ChatsNavigator,
@@ -23,7 +37,6 @@ fun ChatsRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagedChats = viewModel.pagedChats.collectAsLazyPagingItems()
-
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -43,7 +56,6 @@ fun ChatsRoute(
                             duration = SnackbarDuration.Short
                         )
                     }
-
                     is ChatsEffect.OpenDrawer -> {
                         scope.launch { drawerState.open() }
                     }
@@ -55,24 +67,19 @@ fun ChatsRoute(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(modifier = Modifier.fillMaxWidth(DRAWER_WIDTH_FRACTION))
+            {
                 ChatsDrawerContent(
                     searchQuery = state.searchQuery,
                     onSearchQueryChange = { viewModel.onEvent(ChatsEvent.SearchQueryChanged(it)) },
-                    onNewChatClick = {
+                    onMenuItemClick = { item ->
                         scope.launch { drawerState.close() }
-                        viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
-                    },
-                    onHomeClick = {
-                        scope.launch { drawerState.close() }
-                    },
-                    onImagesClick = {
-                        scope.launch { drawerState.close() }
-                        // TODO
-                    },
-                    onProfileClick = {
-                        scope.launch { drawerState.close() }
-                        viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
+                        when (item) {
+                            DrawerItem.NEW_CHAT -> viewModel.onEvent(ChatsEvent.CreateNewChatClicked)
+                            DrawerItem.CHAT_LIST -> {}
+                            DrawerItem.IMAGES -> { /* TODO */ }
+                            DrawerItem.PROFILE -> viewModel.onEvent(ChatsEvent.ProfileMenuClicked)
+                        }
                     }
                 )
             }

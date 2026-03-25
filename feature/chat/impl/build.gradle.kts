@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.retrofit.core)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

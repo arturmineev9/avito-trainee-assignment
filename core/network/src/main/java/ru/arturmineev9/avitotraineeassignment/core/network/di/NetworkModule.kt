@@ -10,12 +10,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import ru.arturmineev9.avitotraineeassignment.core.network.BuildConfig
 import ru.arturmineev9.avitotraineeassignment.core.network.api.GigaChatApi
 import ru.arturmineev9.avitotraineeassignment.core.network.api.GigaChatAuthApi
 import ru.arturmineev9.avitotraineeassignment.core.network.interceptor.AuthInterceptor
 import ru.arturmineev9.avitotraineeassignment.core.network.interceptor.GigaChatAuthenticator
 import java.util.concurrent.TimeUnit
-import java.util.logging.Logger
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -31,6 +31,8 @@ annotation class ApiNetwork
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    private const val AUTH_TIMEOUT_SECONDS = 30L
+    private const val API_TIMEOUT_SECONDS = 60L
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -52,8 +54,8 @@ object NetworkModule {
     fun provideAuthOkHttpClient(loggingInterceptor: HttpLoggingInterceptor) : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(AUTH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(AUTH_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 
@@ -64,7 +66,7 @@ object NetworkModule {
         json: Json
     ): GigaChatAuthApi {
         return Retrofit.Builder()
-            .baseUrl("https://ngw.devices.sberbank.ru:9443/")
+            .baseUrl(BuildConfig.GIGACHAT_AUTH_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
@@ -83,8 +85,8 @@ object NetworkModule {
             .addInterceptor(authInterceptor)
             .authenticator(authenticator)
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 
@@ -95,7 +97,7 @@ object NetworkModule {
         json: Json
     ): GigaChatApi {
         return Retrofit.Builder()
-            .baseUrl("https://gigachat.devices.sberbank.ru/")
+            .baseUrl(BuildConfig.GIGACHAT_API_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()

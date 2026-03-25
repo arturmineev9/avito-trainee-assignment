@@ -23,8 +23,21 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        val authKey = localProperties.getProperty("GIGACHAT_AUTH_KEY") ?: ""
-        buildConfigField("String", "GIGACHAT_AUTH_KEY", "\"$authKey\"")
+        defaultConfig {
+            minSdk = libs.versions.minSdk.get().toInt()
+
+            val authKey = localProperties.getProperty("GIGACHAT_AUTH_KEY") ?: ""
+            val authBaseUrl = localProperties.getProperty("GIGACHAT_AUTH_BASE_URL") ?: ""
+            val apiBaseUrl = localProperties.getProperty("GIGACHAT_API_BASE_URL") ?: ""
+
+            buildConfigField("String", "GIGACHAT_AUTH_KEY", "\"$authKey\"")
+            buildConfigField("String", "GIGACHAT_AUTH_BASE_URL", "\"$authBaseUrl\"")
+            buildConfigField("String", "GIGACHAT_API_BASE_URL", "\"$apiBaseUrl\"")
+
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            consumerProguardFiles("consumer-rules.pro")
+        }
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -63,4 +76,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose)
 }

@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.R
 
 @Composable
 fun NameEditField(
@@ -25,7 +27,7 @@ fun NameEditField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text("Изменить имя") },
+        label = { Text(stringResource(R.string.profile_edit_name_hint)) },
         modifier = Modifier.fillMaxWidth(),
         enabled = !isLoading,
         trailingIcon = {
@@ -36,7 +38,7 @@ fun NameEditField(
                 )
             } else {
                 IconButton(onClick = onSave) {
-                    Icon(Icons.Default.Check, "Save", tint = Color(0xFF4CAF50))
+                    Icon(Icons.Default.Check, stringResource(R.string.cd_save))
                 }
             }
         },

@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.arturmineev9.avitotraineeassignment.feature.profile.impl.R
 
 @Composable
 fun ThemeSettingsSection(
@@ -39,7 +41,7 @@ fun ThemeSettingsSection(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(if (isDarkTheme) Icons.Default.DarkMode else Icons.Default.LightMode, null)
                 Spacer(Modifier.width(12.dp))
-                Text("Темная тема", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.profile_dark_theme_label), style = MaterialTheme.typography.bodyLarge)
             }
             Switch(checked = isDarkTheme, onCheckedChange = onThemeToggle)
         }
